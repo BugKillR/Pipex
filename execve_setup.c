@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   execve_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkeskin <kkeskin@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 03:33:28 by kkeskin           #+#    #+#             */
-/*   Updated: 2025/09/16 03:33:29 by kkeskin          ###   ########.tr       */
+/*   Created: 2025/09/16 03:31:56 by kkeskin           #+#    #+#             */
+/*   Updated: 2025/09/16 03:31:57 by kkeskin          ###   ########.tr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	is_here_doc(char *argv[])
+t_exec_data	execve_setup(char *envp[], char *cmd)
 {
-	if (!ft_strncmp("here_doc", argv[1], ft_strlen(argv[1])))
-		return (1);
-	else
-		return (0);
-}
+	t_exec_data	data;
+	char		*all_paths;
+	char		*pathname;
 
-void	pipex(int argc, char *argv[], char *envp[])
-{
-	(void)argc;
-	//if (argc < 5)
-	//	perror("Invalid argument count!\n");
-	if (is_here_doc(argv))
-		here_doc(argv, envp);
-	else
-		classic(argv, envp);
-	exit(0);
+	all_paths = all_paths_from_envp(envp);
+	pathname = find_pathname_for_command(all_paths, cmd);
+	data.pathname = pathname;
+	data.cmd = cmd;
+	printf("Pathname: %s\nCmd: %s\n", data.pathname, data.cmd);
+	if (data.pathname != NULL)
+		free(data.pathname);
+	return (data);
 }

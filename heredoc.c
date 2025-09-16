@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkeskin <kkeskin@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 03:33:28 by kkeskin           #+#    #+#             */
-/*   Updated: 2025/09/16 03:33:29 by kkeskin          ###   ########.tr       */
+/*   Created: 2025/09/16 03:32:41 by kkeskin           #+#    #+#             */
+/*   Updated: 2025/09/16 03:32:41 by kkeskin          ###   ########.tr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	is_here_doc(char *argv[])
-{
-	if (!ft_strncmp("here_doc", argv[1], ft_strlen(argv[1])))
-		return (1);
-	else
-		return (0);
-}
+// path bulma OK
+// komutu alma ve flagleri ayırma KO
+// heredoc'a uygun şekilde çalışma KO
+// multiple-pipe kullanımı KO
 
-void	pipex(int argc, char *argv[], char *envp[])
+void	here_doc(char *argv[], char *envp[])
 {
-	(void)argc;
-	//if (argc < 5)
-	//	perror("Invalid argument count!\n");
-	if (is_here_doc(argv))
-		here_doc(argv, envp);
-	else
-		classic(argv, envp);
-	exit(0);
+	t_exec_data	data;
+
+	(void)argv;
+	data = execve_setup(envp, "ip");
+	(void)data;
+	return ;
 }
