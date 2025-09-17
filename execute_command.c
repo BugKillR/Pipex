@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkeskin <kkeskin@student.42istanbul.com.t  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/17 04:05:15 by kkeskin           #+#    #+#             */
+/*   Updated: 2025/09/17 04:05:16 by kkeskin          ###   ########.tr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 static int	inputfile_to_pipe(char *argv[])
@@ -9,12 +21,12 @@ static int	inputfile_to_pipe(char *argv[])
 	if (pipe(fd) == -1)
 	{
 		ft_putstr_fd("Pipe failed on inputfile_to_pipe funct!\n", 2);
-		exit(2);
+		exit(1);
 	}
 	if (access(argv[1], F_OK) != 0)
 	{
 		ft_putstr_fd("Give an input file!\n", 2);
-		exit(2);
+		exit(1);
 	}
 	inputfile = open(argv[1], O_RDONLY);
 	read = get_next_line(inputfile);
@@ -39,10 +51,11 @@ static void	child_process(t_exec_data data, char **envp, int input, int output)
 	close(output);
 	execve(data.pathname, data.flags, envp);
 	perror("Execve failed!\n");
-	exit(2);
+	exit(1);
 }
 
-static void	last_process_before_output(t_exec_data data, char *envp[], int input, int output)
+static void	last_process_before_output(t_exec_data data,
+	char *envp[], int input, int output)
 {
 	pid_t	pid;
 
@@ -54,10 +67,12 @@ static void	last_process_before_output(t_exec_data data, char *envp[], int input
 		close(input);
 		close(output);
 		free_data(data);
+		waitpid(pid, NULL, 0);
 	}
 }
 
-static void	get_next_command(t_exec_data data, int *pipe_fd, int *input, int *index)
+static void	get_next_command(t_exec_data data,
+	int *pipe_fd, int *input, int *index)
 {
 	close(pipe_fd[1]);
 	close(*input);
@@ -74,9 +89,9 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 	int			fd[2];
 	pid_t		pid;
 
-	if (*index == 3) // heredoc
+	if (*index == 3)
 		printf("Test\n");
-	else if (*index == 2) // classic
+	else if (*index == 2)
 		inputfile = inputfile_to_pipe(argv);
 	while (*index < argc - 2)
 	{
@@ -89,6 +104,8 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 			get_next_command(data, fd, &inputfile, index);
 	}
 	outputfile = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (outputfile < 0)
+		exit(1);
 	data = execve_setup(argv, envp, index);
 	last_process_before_output(data, envp, inputfile, outputfile);
 }

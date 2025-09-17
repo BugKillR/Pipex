@@ -27,6 +27,11 @@ void	pipex(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("Invalid argument count!\n", 2);
 		exit(2);
 	}
+	if (argv[1][0] == '\0')
+	{
+		ft_putstr_fd("Empty file name!\n", 2);
+		exit(2);
+	}
 	if (is_here_doc(argv))
 		here_doc(argc, argv, envp);
 	else

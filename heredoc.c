@@ -12,13 +12,6 @@
 
 #include "pipex.h"
 
-// path bulma OK
-// komutu alma ve flagleri ayırma KO
-// heredoc'a uygun şekilde çalışma KO
-// multiple-pipe kullanımı KO
-
-
-
 void	here_doc(int argc, char *argv[], char *envp[])
 {
 	int			index;
@@ -26,7 +19,7 @@ void	here_doc(int argc, char *argv[], char *envp[])
 	if (argc < 4)
 	{
 		ft_putstr_fd("Delimiter is missing!\n", 2);
-		exit(2);
+		exit(1);
 	}
 	index = 3;
 	execute_commands(argc, argv, envp, &index);
