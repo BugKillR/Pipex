@@ -24,7 +24,8 @@ SRCS	= pipex.c \
 			flag_separator.c \
 			execute_command.c \
 			inputfile_to_pipe.c \
-			decide_inputfile_heredoc_or_classic.c
+			decide_inputfile_heredoc_or_classic.c \
+			decide_outputfile_settings.c
 
 OBJS	= $(SRCS:.c=.o)
 

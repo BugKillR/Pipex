@@ -83,6 +83,7 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 	int			fd[2];
 	pid_t		pid;
 
+	outputfile = decide_outputfile_settings(argc, argv, *index);
 	inputfile = decide_inputfile_heredoc_or_classic(*index, argv);
 	while (*index < argc - 2)
 	{
@@ -97,7 +98,6 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 			get_next_command(data, fd, &inputfile, index);
 		}
 	}
-	outputfile = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	data = execve_setup(argv, envp, index);
 	last_process_before_output(data, envp, inputfile, outputfile);
 }

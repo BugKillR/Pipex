@@ -41,6 +41,7 @@ void		execute_commands(int argc, char *argv[], char *envp[], int *index);
 int			c_inputfile_to_pipe(char *argv[]);
 int			h_inputfile_to_pipe(char *argv[]);
 int			decide_inputfile_heredoc_or_classic(int index, char *argv[]);
+int			decide_outputfile_settings(int argc, char *argv[], int index);
 
 //	----- Free Functions -----
 
