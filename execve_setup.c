@@ -23,8 +23,8 @@ t_exec_data	execve_setup(char *argv[], char *envp[], int *index)
 	data.pathname = find_pathname_for_command(all_paths, data.cmd);
 	if (data.pathname == NULL)
 	{
-		ft_putstr_fd("Invalid pathname! 
-			Perhaps it caused of typo in commands!\n", 2);
+		ft_putstr_fd("Invalid pathname! ", 2);
+		ft_putstr_fd("Perhaps it caused of typo in commands!\n", 2);
 		free_double_chr(data.flags);
 		exit(1);
 	}
