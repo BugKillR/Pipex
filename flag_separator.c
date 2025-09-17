@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   separator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkeskin <kkeskin@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 03:33:28 by kkeskin           #+#    #+#             */
-/*   Updated: 2025/09/16 03:33:29 by kkeskin          ###   ########.tr       */
+/*   Created: 2025/09/16 03:35:21 by kkeskin           #+#    #+#             */
+/*   Updated: 2025/09/16 03:35:21 by kkeskin          ###   ########.tr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	is_here_doc(char *argv[])
-{
-	if (!ft_strncmp("here_doc", argv[1], ft_strlen(argv[1])))
-		return (1);
-	else
-		return (0);
-}
+// static void	check_flags(char **flags)
+// {
+// 	int	i;
+// 
+// 	i = 1;
+// 	while (flags[i])
+// 	{
+// 		if (ft_strncmp("-", flags[i], 1) != 0)
+// 		{
+// 			free_double_chr(flags);
+// 			ft_putstr_fd("Wrong flag!\n", 2);
+// 			exit(2);
+// 		}
+// 		i++;
+// 	}
+// }
 
-void	pipex(int argc, char *argv[], char *envp[])
+char	**get_flags(char *argv[], int index)
 {
-	if (argc < 3)
-	{
-		ft_putstr_fd("Invalid argument count!\n", 2);
-		exit(2);
-	}
-	if (is_here_doc(argv))
-		here_doc(argc, argv, envp);
-	else
-		classic(argc, argv, envp);
-	exit(0);
+	char	**flags;
+
+	flags = ft_split(argv[index], ' ');
+	//// check_flags(flags);
+	return (flags);
 }

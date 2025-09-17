@@ -26,3 +26,11 @@ void	free_double_chr(char **d_c)
 	if (d_c)
 		free(d_c);
 }
+
+void	free_data(t_exec_data data)
+{
+	if (data.pathname)
+		free(data.pathname);
+	if (data.flags)
+		free_double_chr(data.flags);
+}

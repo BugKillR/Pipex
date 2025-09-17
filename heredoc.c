@@ -17,12 +17,18 @@
 // heredoc'a uygun şekilde çalışma KO
 // multiple-pipe kullanımı KO
 
-void	here_doc(char *argv[], char *envp[])
-{
-	t_exec_data	data;
 
-	(void)argv;
-	data = execve_setup(envp, "ip");
-	(void)data;
+
+void	here_doc(int argc, char *argv[], char *envp[])
+{
+	int			index;
+
+	if (argc < 4)
+	{
+		ft_putstr_fd("Delimiter is missing!\n", 2);
+		exit(2);
+	}
+	index = 3;
+	execute_commands(argc, argv, envp, &index);
 	return ;
 }

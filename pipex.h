@@ -18,24 +18,29 @@
 # include <sys/wait.h>
 # include <stdio.h> // perror
 # include "./Libft/libft.h"
+# include "./get_next_line/get_next_line.h"
 
 typedef struct s_exec_data
 {
 	char	*pathname;
 	char	*cmd;
+	char	**flags;
 }				t_exec_data;
 
 //	----- Normal Functions -----
 
 void		pipex(int argc, char *argv[], char *envp[]);
-void		here_doc(char *argv[], char *envp[]);
-void		classic(char *argv[], char *envp[]);
+void		here_doc(int argc, char *argv[], char *envp[]);
+void		classic(int argc, char *argv[], char *envp[]);
 char		*all_paths_from_envp(char *envp[]);
 char		*find_pathname_for_command(char *all_paths, char *cmd);
-t_exec_data	execve_setup(char *envp[], char *cmd);
+t_exec_data	execve_setup(char *argv[], char *envp[], int *index);
+char		**get_flags(char *argv[], int i);
+void		execute_commands(int argc, char *argv[], char *envp[], int *index);
 
 //	----- Free Functions -----
 
 void		free_double_chr(char **d_c);
+void		free_data(t_exec_data data);
 
 #endif

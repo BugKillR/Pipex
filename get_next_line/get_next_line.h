@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   separator.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkeskin <kkeskin@student.42istanbul.com.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 03:35:21 by kkeskin           #+#    #+#             */
-/*   Updated: 2025/09/16 03:35:21 by kkeskin          ###   ########.tr       */
+/*   Created: 2025/08/22 00:00:34 by kkeskin           #+#    #+#             */
+/*   Updated: 2025/08/22 00:00:35 by kkeskin          ###   ########.tr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#ifndef GET_NEXT_LINE_H
 
-// 3 pointer kullanıcam
+# define GET_NEXT_LINE_H
 
-//return[0] == "wc", "-l", NULL; mesela
-//return[1] == "ls", "-l", "-a", NULL; gibisinden
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
-char	***separator(char *[]argv)
-{
-	return (NULL);
-}
+# include <stdlib.h>
+# include <unistd.h>
+# include "../Libft/libft.h"
+
+char	*get_next_line(int fd);
+void	*ft_calloc(size_t nmemb, size_t size);
+char	*ft_strjoin(char const *s1, char const *s2);
+
+#endif

@@ -9,34 +9,46 @@ CFLAGS	= -Wall -Wextra -Werror
 LIBFT_DIR	= ./Libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
+#	----- GNL ----- #
+
+GNL_DIR		= ./get_next_line
+GNL			= $(GNL_DIR)/get_next_line.a
+
 SRCS	= pipex.c \
 			heredoc.c \
 			classic.c \
 			all_paths_from_envp.c \
 			find_pathname_for_command.c \
 			execve_setup.c \
-			free.c
+			free.c \
+			flag_separator.c \
+			execute_command.c
 
 OBJS	= $(SRCS:.c=.o)
 
 all: $(EXE)
 
 $(EXE): $(NAME)
-	$(CC) $(CFLAGS) -g main.c $(NAME) $(LIBFT) -o pipex
+	$(CC) $(CFLAGS) -g main.c $(NAME) $(GNL) $(LIBFT) -o pipex
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(GNL) $(LIBFT)
 	ar rcs $(NAME) $(OBJS)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
+$(GNL):
+	make -C $(GNL_DIR)
+
 clean:
 	rm -rf $(OBJS)
 	make -C $(LIBFT_DIR) clean
+	make -C $(GNL_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME) $(EXE)
 	make -C $(LIBFT_DIR) fclean
+	make -C $(GNL_DIR) fclean
 
 re: fclean all
 
