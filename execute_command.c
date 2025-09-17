@@ -80,8 +80,7 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 		inputfile = inputfile_to_pipe(argv);
 	while (*index < argc - 2)
 	{
-		if (pipe(fd) == -1)
-			perror("pipe failed");
+		pipe(fd);
 		data = execve_setup(argv, envp, index);
 		pid = fork();
 		if (pid == 0)

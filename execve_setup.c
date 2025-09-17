@@ -27,6 +27,5 @@ t_exec_data	execve_setup(char *argv[], char *envp[], int *index)
 		free_double_chr(data.flags);
 		exit(2);
 	}
-	(*index)++;
 	return (data);
 }
