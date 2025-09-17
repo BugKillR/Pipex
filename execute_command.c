@@ -12,35 +12,6 @@
 
 #include "pipex.h"
 
-static int	inputfile_to_pipe(char *argv[])
-{
-	char	*read;
-	int		inputfile;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-	{
-		ft_putstr_fd("Pipe failed on inputfile_to_pipe funct!\n", 2);
-		exit(1);
-	}
-	if (access(argv[1], F_OK) != 0)
-	{
-		ft_putstr_fd("Give an input file!\n", 2);
-		exit(1);
-	}
-	inputfile = open(argv[1], O_RDONLY);
-	read = get_next_line(inputfile);
-	while (read)
-	{
-		write(fd[1], read, ft_strlen(read));
-		free(read);
-		read = get_next_line(inputfile);
-	}
-	close(inputfile);
-	close(fd[1]);
-	return (fd[0]);
-}
-
 static void	child_process(t_exec_data data, char **envp, int input, int output)
 {
 	if (dup2(input, 0) == -1)
@@ -54,6 +25,28 @@ static void	child_process(t_exec_data data, char **envp, int input, int output)
 	exit(1);
 }
 
+static void	check_if_output_empty(t_exec_data data)
+{
+	char	*read;
+	int		fd;
+
+	fd = open(data.outputfile, O_RDONLY);
+	read = get_next_line(fd);
+	if (!read)
+	{
+		free_data(data);
+		exit(1);
+	}
+	else
+	{
+		while (read)
+		{
+			free(read);
+			read = get_next_line(fd);
+		}
+	}
+}
+
 static void	last_process_before_output(t_exec_data data,
 	char *envp[], int input, int output)
 {
@@ -64,10 +57,11 @@ static void	last_process_before_output(t_exec_data data,
 		child_process(data, envp, input, output);
 	else
 	{
+		waitpid(pid, NULL, 0);
+		check_if_output_empty(data);
 		close(input);
 		close(output);
 		free_data(data);
-		waitpid(pid, NULL, 0);
 	}
 }
 
@@ -89,10 +83,7 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 	int			fd[2];
 	pid_t		pid;
 
-	if (*index == 3)
-		printf("Test\n");
-	else if (*index == 2)
-		inputfile = inputfile_to_pipe(argv);
+	inputfile = decide_inputfile_heredoc_or_classic(*index, argv);
 	while (*index < argc - 2)
 	{
 		pipe(fd);
@@ -101,7 +92,10 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 		if (pid == 0)
 			child_process(data, envp, inputfile, fd[1]);
 		else
+		{
+			waitpid(pid, NULL, 0);
 			get_next_command(data, fd, &inputfile, index);
+		}
 	}
 	outputfile = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (outputfile < 0)

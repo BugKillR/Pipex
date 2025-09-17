@@ -22,14 +22,16 @@ SRCS	= pipex.c \
 			execve_setup.c \
 			free.c \
 			flag_separator.c \
-			execute_command.c
+			execute_command.c \
+			inputfile_to_pipe.c \
+			decide_inputfile_heredoc_or_classic.c
 
 OBJS	= $(SRCS:.c=.o)
 
 all: $(EXE)
 
 $(EXE): $(NAME)
-	$(CC) $(CFLAGS) -g main.c $(NAME) $(GNL) $(LIBFT) -o pipex
+	$(CC) $(CFLAGS) main.c $(NAME) $(GNL) $(LIBFT) -o pipex
 
 $(NAME): $(OBJS) $(GNL) $(LIBFT)
 	ar rcs $(NAME) $(OBJS)

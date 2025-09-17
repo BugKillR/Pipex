@@ -25,6 +25,7 @@ typedef struct s_exec_data
 	char	*pathname;
 	char	*cmd;
 	char	**flags;
+	char	*outputfile;
 }				t_exec_data;
 
 //	----- Normal Functions -----
@@ -37,6 +38,8 @@ char		*find_pathname_for_command(char *all_paths, char *cmd);
 t_exec_data	execve_setup(char *argv[], char *envp[], int *index);
 char		**get_flags(char *argv[], int i);
 void		execute_commands(int argc, char *argv[], char *envp[], int *index);
+int			inputfile_to_pipe(char *argv[]);
+int			decide_inputfile_heredoc_or_classic(int index, char *argv[]);
 
 //	----- Free Functions -----
 
