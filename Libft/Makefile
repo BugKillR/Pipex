@@ -23,10 +23,10 @@ $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
 clean:
-	$(RM) $(OBJS) $(BONUS_OBJS)
+	rm -rf $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 

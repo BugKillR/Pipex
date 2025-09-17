@@ -1,41 +1,30 @@
-NAME	= pipex.a
-EXE		= pipex
+EXE     = pipex
 
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CC      = cc
+CFLAGS  = -Wall -Wextra -Werror
 
-#	----- Libft -----	#
+# ----- Libft ----- #
 
-LIBFT_DIR	= ./Libft
-LIBFT		= $(LIBFT_DIR)/libft.a
+LIBFT_DIR   = ./Libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-#	----- GNL ----- #
+# ----- GNL ----- #
 
-GNL_DIR		= ./get_next_line
-GNL			= $(GNL_DIR)/get_next_line.a
+GNL_DIR     = ./get_next_line
+GNL         = $(GNL_DIR)/get_next_line.a
 
-SRCS	= pipex.c \
-			heredoc.c \
-			classic.c \
-			all_paths_from_envp.c \
-			find_pathname_for_command.c \
-			execve_setup.c \
-			free.c \
-			flag_separator.c \
-			execute_command.c \
-			inputfile_to_pipe.c \
-			decide_inputfile_heredoc_or_classic.c \
-			decide_outputfile_settings.c
+# ----- Source Code ----- #
 
-OBJS	= $(SRCS:.c=.o)
+SRC_DIR     = ./src
+SRC_LIB     = $(SRC_DIR)/pipex.a
 
 all: $(EXE)
 
-$(EXE): $(NAME)
-	$(CC) $(CFLAGS) main.c $(NAME) $(GNL) $(LIBFT) -o pipex
+$(EXE): $(SRC_LIB) $(GNL) $(LIBFT)
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_LIB) $(GNL) $(LIBFT) -o $(EXE)
 
-$(NAME): $(OBJS) $(GNL) $(LIBFT)
-	ar rcs $(NAME) $(OBJS)
+$(SRC_LIB):
+	make -C $(SRC_DIR)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -44,14 +33,15 @@ $(GNL):
 	make -C $(GNL_DIR)
 
 clean:
-	rm -rf $(OBJS)
 	make -C $(LIBFT_DIR) clean
 	make -C $(GNL_DIR) clean
+	make -C $(SRC_DIR) clean
 
 fclean: clean
-	rm -rf $(NAME) $(EXE)
+	rm -f $(EXE)
 	make -C $(LIBFT_DIR) fclean
 	make -C $(GNL_DIR) fclean
+	make -C $(SRC_DIR) fclean
 
 re: fclean all
 
