@@ -17,8 +17,8 @@ int	decide_inputfile_heredoc_or_classic(int index, char *argv[])
 	int	inputfile;
 
 	if (index == 3)
-		inputfile = 1;
+		inputfile = h_inputfile_to_pipe(argv);
 	else if (index == 2)
-		inputfile = inputfile_to_pipe(argv);
+		inputfile = c_inputfile_to_pipe(argv);
 	return (inputfile);
 }

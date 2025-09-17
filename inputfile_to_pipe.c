@@ -12,31 +12,51 @@
 
 #include "pipex.h"
 
-int	inputfile_to_pipe(char *argv[])
+int	h_inputfile_to_pipe(char *argv[])
+{
+	char	*read;
+	int		fd[2];
+	char	*delimiter;
+
+	delimiter = argv[2];
+	pipe(fd);
+	read = get_next_line(0);
+	while (read && (ft_strlen(read) - 1 != ft_strlen(delimiter)
+			|| ft_strncmp(read, delimiter, ft_strlen(delimiter)) != 0))
+	{
+		write(fd[1], read, ft_strlen(read));
+		free(read);
+		read = get_next_line(0);
+	}
+	if (read)
+		free(read);
+	close(fd[1]);
+	return (fd[0]);
+}
+
+int	c_inputfile_to_pipe(char *argv[])
 {
 	char	*read;
 	int		inputfile;
 	int		fd[2];
 
-	if (pipe(fd) == -1)
-	{
-		ft_putstr_fd("Pipe failed on inputfile_to_pipe funct!\n", 2);
-		exit(1);
-	}
+	pipe(fd);
 	if (access(argv[1], F_OK) != 0)
-	{
-		ft_putstr_fd("Give an input file!\n", 2);
+		close(fd[1]);
+	else if (access(argv[1], X_OK | R_OK) != 0)
 		exit(0);
-	}
-	inputfile = open(argv[1], O_RDONLY);
-	read = get_next_line(inputfile);
-	while (read)
+	else
 	{
-		write(fd[1], read, ft_strlen(read));
-		free(read);
+		inputfile = open(argv[1], O_RDONLY);
 		read = get_next_line(inputfile);
+		while (read)
+		{
+			write(fd[1], read, ft_strlen(read));
+			free(read);
+			read = get_next_line(inputfile);
+		}
+		close(inputfile);
+		close(fd[1]);
 	}
-	close(inputfile);
-	close(fd[1]);
 	return (fd[0]);
 }

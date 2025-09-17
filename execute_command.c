@@ -32,7 +32,7 @@ static void	check_if_output_empty(t_exec_data data)
 
 	fd = open(data.outputfile, O_RDONLY);
 	read = get_next_line(fd);
-	if (!read)
+	if (!read && access(data.outputfile, F_OK | X_OK) != 0)
 	{
 		free_data(data);
 		exit(1);
@@ -98,8 +98,6 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 		}
 	}
 	outputfile = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (outputfile < 0)
-		exit(1);
 	data = execve_setup(argv, envp, index);
 	last_process_before_output(data, envp, inputfile, outputfile);
 }
