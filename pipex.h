@@ -17,8 +17,8 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <stdio.h>
-# include "../Libft/libft.h"
-# include "../get_next_line/get_next_line.h"
+# include "./Libft/libft.h"
+# include "./get_next_line/get_next_line.h"
 
 typedef struct s_exec_data
 {
