@@ -16,6 +16,7 @@ int	decide_outputfile_settings(int argc, char *argv[], int index)
 {
 	int	outputfile;
 
+	outputfile = 0;
 	if (index == 3)
 		outputfile = open(argv[argc - 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (index == 2)

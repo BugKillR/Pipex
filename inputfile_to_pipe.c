@@ -43,7 +43,7 @@ int	c_inputfile_to_pipe(char *argv[])
 	pipe(fd);
 	if (access(argv[1], F_OK) != 0)
 		close(fd[1]);
-	else if (access(argv[1], X_OK | R_OK) != 0)
+	else if (access(argv[1], R_OK) != 0)
 		exit(0);
 	else
 	{
