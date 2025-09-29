@@ -16,6 +16,11 @@ char	**get_flags(char *argv[], int index)
 {
 	char	**flags;
 
+	if (argv[index][0] == '\0')
+	{
+		perror("Null command");
+		exit(1);
+	}
 	flags = ft_split(argv[index], ' ');
 	return (flags);
 }

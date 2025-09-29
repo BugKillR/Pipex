@@ -16,11 +16,6 @@ void	classic(int argc, char *argv[], char *envp[])
 {
 	int			index;
 
-	if (argc < 3)
-	{
-		ft_putstr_fd("Missing input file or cmd!\n", 2);
-		exit(2);
-	}
 	index = 2;
 	execute_commands(argc, argv, envp, &index);
 	return ;

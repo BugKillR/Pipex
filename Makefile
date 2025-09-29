@@ -25,7 +25,8 @@ SRCS	= pipex.c \
 			execute_command.c \
 			inputfile_to_pipe.c \
 			decide_inputfile_heredoc_or_classic.c \
-			decide_outputfile_settings.c
+			decide_outputfile_settings.c \
+			if_inputfile_not_exist_exec_last_cmd.c
 
 OBJS	= $(SRCS:.c=.o)
 

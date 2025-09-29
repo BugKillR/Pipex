@@ -15,9 +15,15 @@
 static void	child_process(t_exec_data data, char **envp, int input, int output)
 {
 	if (dup2(input, 0) == -1)
-		perror("Dup2 input error!\n");
+	{
+		free_data(data);
+		return ;
+	}
 	if (dup2(output, 1) == -1)
-		perror("Dup2 output error!\n");
+	{
+		free_data(data);
+		return ;
+	}
 	close(input);
 	close(output);
 	execve(data.pathname, data.flags, envp);
@@ -32,9 +38,10 @@ static void	check_if_output_empty(t_exec_data data)
 
 	fd = open(data.outputfile, O_RDONLY);
 	read = get_next_line(fd);
-	if (!read && access(data.outputfile, F_OK | X_OK) != 0)
+	if (!read && access(data.outputfile, F_OK | W_OK) != 0)
 	{
 		free_data(data);
+		perror("Output file");
 		exit(1);
 	}
 	else
@@ -85,6 +92,8 @@ void	execute_commands(int argc, char *argv[], char *envp[], int *index)
 
 	outputfile = decide_outputfile_settings(argc, argv, *index);
 	inputfile = decide_inputfile_heredoc_or_classic(*index, argv);
+	if (*index == 2)
+		*index = if_inputfile_not_exist_exec_last_cmd(argc, *index, argv);
 	while (*index < argc - 2)
 	{
 		pipe(fd);

@@ -25,6 +25,7 @@ t_exec_data	execve_setup(char *argv[], char *envp[], int *index)
 	if (data.pathname == NULL)
 	{
 		free_double_chr(data.flags);
+		perror("Path");
 		exit(127);
 	}
 	i = 0;

@@ -19,6 +19,13 @@ static char	*search_for_cmd_path(char **paths, char *cmd)
 	int		i;
 
 	i = 0;
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		else
+			return (NULL);
+	}
 	while (paths[i])
 	{
 		add_slash = ft_strjoin(paths[i], "/");
@@ -26,8 +33,6 @@ static char	*search_for_cmd_path(char **paths, char *cmd)
 			return (NULL);
 		real_path = ft_strjoin(add_slash, cmd);
 		free(add_slash);
-		if (!real_path)
-			return (NULL);
 		if (access(real_path, X_OK) == 0)
 			return (real_path);
 		free(real_path);

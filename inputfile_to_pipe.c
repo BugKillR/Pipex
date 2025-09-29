@@ -34,29 +34,40 @@ int	h_inputfile_to_pipe(char *argv[])
 	return (fd[0]);
 }
 
-int	c_inputfile_to_pipe(char *argv[])
+static int	read_from_inputfile(char *argv[], int fd[])
 {
 	char	*read;
 	int		inputfile;
+
+	inputfile = open(argv[1], O_RDONLY);
+	read = get_next_line(inputfile);
+	while (read)
+	{
+		write(fd[1], read, ft_strlen(read));
+		free(read);
+		read = get_next_line(inputfile);
+	}
+	close(inputfile);
+	close(fd[1]);
+	return (fd[0]);
+}
+
+int	c_inputfile_to_pipe(char *argv[])
+{
 	int		fd[2];
 
 	pipe(fd);
 	if (access(argv[1], F_OK) != 0)
-		close(fd[1]);
-	else if (access(argv[1], R_OK) != 0)
-		exit(0);
-	else
 	{
-		inputfile = open(argv[1], O_RDONLY);
-		read = get_next_line(inputfile);
-		while (read)
-		{
-			write(fd[1], read, ft_strlen(read));
-			free(read);
-			read = get_next_line(inputfile);
-		}
-		close(inputfile);
+		perror("No Inputfile");
 		close(fd[1]);
 	}
+	else if (access(argv[1], R_OK) != 0)
+	{
+		perror("Inputfile Read");
+		exit(0);
+	}
+	else
+		return (read_from_inputfile(argv, fd));
 	return (fd[0]);
 }

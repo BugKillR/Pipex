@@ -58,6 +58,8 @@ int			decide_outputfile_settings(int argc, char *argv[], int index);
 int			decide_inputfile_heredoc_or_classic(int index, char *argv[]);
 int			c_inputfile_to_pipe(char *argv[]);
 int			h_inputfile_to_pipe(char *argv[]);
+int			if_inputfile_not_exist_exec_last_cmd(int argc,
+				int index, char *argv[]);
 
 // ----- Executive Setup (t_exec_data builder functions) -----
 // >> These functions build the t_exec_data struct for each command.

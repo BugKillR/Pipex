@@ -22,19 +22,28 @@ static int	is_here_doc(char *argv[])
 
 void	pipex(int argc, char *argv[], char *envp[])
 {
-	if (argc < 3)
-	{
-		ft_putstr_fd("Invalid argument count!\n", 2);
-		exit(2);
-	}
-	if (argv[1][0] == '\0')
+	if (argc < 2 || argv[1][0] == '\0')
 	{
 		ft_putstr_fd("Empty file name!\n", 2);
 		exit(2);
 	}
 	if (is_here_doc(argv))
+	{
+		if (argc < 6)
+		{
+			ft_putstr_fd("Invalid argument count!\n", 2);
+			exit(2);
+		}
 		here_doc(argc, argv, envp);
+	}
 	else
+	{
+		if (argc < 5)
+		{
+			ft_putstr_fd("Invalid argument count!\n", 2);
+			exit(2);
+		}
 		classic(argc, argv, envp);
+	}
 	exit(0);
 }
